@@ -1,0 +1,35 @@
+Instalar Apache (HTTP), vsftpd (FTP) y OpenSSH
+sudo dnf install -y httpd vsftpd openssh-server
+Habilitar y arrancar los servicios
+sudo systemctl enable --now httpd vsftpd sshd
+Verificar el estado de los servicios
+sudo systemctl status httpd vsftpd sshd
+Bloquear los puertos 80 (HTTP), 21 (FTP) y 22 (SSH) con iptables
+Bloqueamos el tráfico en los puertos 80, 21 y 22
+sudo iptables -A INPUT -p tcp --dport 80, 21, 22-j DROP
+Guardamos reglas para que persistan tras un reinicio
+sudo iptables-save | sudo tee /etc/sysconfig/iptables
+Verificamos que las reglas se aplicaron
+sudo iptables -L -n -v
+Habilitar nuevamente los puertos con iptables
+Eliminar reglas que bloquean los puertos
+sudo iptables -D INPUT -p tcp --dport 80, 21, 22 -j DROP
+Guardar reglas actualizadas
+sudo iptables-save | sudo tee /etc/sysconfig/iptables
+Verificar que las reglas se eliminaron
+sudo iptables -L -n -v
+
+Bloquear tráfico con firewall-cmd
+Bloquear tráfico en los puertos 80, 21 y 22
+sudo firewall-cmd --permanent --zone=public --remove-service=http, ftp, ssh
+Aplicar cambios
+sudo firewall-cmd --reload
+Verificar reglas
+sudo firewall-cmd --list-all
+Habilitar nuevamente los servicios con firewall-cmd
+Habilitar nuevamente los servicios
+sudo firewall-cmd --permanent --zone=public --add-service=http, ftp, ssh
+Aplicar cambios
+sudo firewall-cmd --reload
+Verificar reglas
+sudo firewall-cmd --list-all
