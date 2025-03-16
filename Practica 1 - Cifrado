@@ -1,0 +1,8 @@
+sudo dnf install gnup2 -y
+mkdir nombre de la carpeta
+cd nombre de la carpeta/
+nano nombre_archivo.txt -------------- Colocamos algo aqui dentro para poder cifrarlo.
+ls
+gpg2 -c nombre_archivo.txt.gpg
+cat nombre_archivo.txt.gpg
+gpg2 -d nombre_archivo.txt.gpg
